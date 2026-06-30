@@ -1,7 +1,7 @@
 from sqlalchemy.pool import NullPool
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from typing import Annotated
-from fastapi import Depends
+from fast_depends import Depends
 
 from app.config import settings
 

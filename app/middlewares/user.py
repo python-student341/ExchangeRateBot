@@ -7,6 +7,7 @@ from app.database.redis_database import redis
 from app.utils.cache import get_cache_key
 from app.database.database import session_dep
 
+
 @inject
 async def check_user_registration(handler: Callable, event: Message, data: Dict, session: session_dep):
     if event.from_user:

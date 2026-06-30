@@ -54,11 +54,7 @@ async def track_rate_changes():
         all_users = query.all()
 
     for tg_user_id, user_currency in all_users:
-        #Get currency from new_rates
-        if hasattr(user_currency, 'value'):
-            currency = user_currency.value
-        else:
-            currency = user_currency
+        currency = user_currency.value
                 
         old_rate = last_rates[currency]
         current_rate = new_rates[currency]
@@ -72,16 +68,20 @@ async def track_rate_changes():
     last_rates = new_rates
 
 
-#Will be used in the next commit
-#async def get_current_exchange_rate_service(current_currency: str = None):
-#    if not current_currency:
-#        current_currency = currency
+async def get_current_exchange_rate_service(session: AsyncSession, tg_user_id: int):
+    query = await session.execute(select(User).where(User.tg_user_id == tg_user_id))
+    current_user = query.scalar_one_or_none()
 
-#    rate = await get_exchange_rate(url, current_currency)
-#    return rate
+    currency = current_user.currency.value
+
+    current_rate = await get_exchange_rate(url, currency)
+    if not current_rate:
+        return None
+
+    return current_rate, currency
 
 
-async def update_currency(currency: str, tg_user_id: int, session: AsyncSession):
+async def update_currency(session: AsyncSession, currency: str, tg_user_id: int):
     query = await session.execute(select(User).where(User.tg_user_id == tg_user_id))
     current_user = query.scalar_one_or_none()
 

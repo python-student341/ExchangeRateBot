@@ -1,16 +1,16 @@
 import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from app.services.rate import track_rate_changes
 from app.utils.bot_loader import dp, bot
-from app.handlers.handlers import router
+from app.router import main_router
 from app.middlewares.user import check_user_registration
-from app.services.rate import track_rate_changes
+from app.services.notification import send_notifications_on_change, send_notifications_by_time
 
 
 async def on_startup():
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(track_rate_changes, trigger="interval", minutes=60)
+    scheduler.add_job(send_notifications_on_change, trigger="interval", seconds=5)
+    scheduler.add_job(send_notifications_by_time, trigger="cron", hour=9, minute=37)
     scheduler.start()
 
 
@@ -19,7 +19,7 @@ async def main():
     dp.message.middleware(check_user_registration)
     
     # 2. Conneсt router
-    dp.include_router(router)
+    dp.include_router(main_router)
     
     # 3. Start monitoring in background mode
     dp.startup.register(on_startup)

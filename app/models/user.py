@@ -21,3 +21,4 @@ class User(Base):
     tg_user_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     currency: Mapped[Currency] = mapped_column(default=Currency.usd, nullable=True)
     notification_mode: Mapped[NotificationMode] = mapped_column(default=NotificationMode.on_change, nullable=True)
+    notification_time: Mapped[str] = mapped_column(default="09:00")

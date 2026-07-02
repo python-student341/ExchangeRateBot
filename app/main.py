@@ -9,8 +9,8 @@ from app.services.notification import send_notifications_on_change, send_notific
 
 async def on_startup():
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(send_notifications_on_change, trigger="interval", seconds=5)
-    scheduler.add_job(send_notifications_by_time, trigger="cron", hour=9, minute=37)
+    scheduler.add_job(send_notifications_on_change, trigger="interval", minutes=60)
+    scheduler.add_job(send_notifications_by_time, trigger="cron", minute="*", second=0)
     scheduler.start()
 
 

@@ -25,7 +25,6 @@ async def update_notification_time_service(session: AsyncSession, current_user: 
     await session.refresh(current_user)
 
 
-
 async def send_notifications_by_time():
     rates = await fetch_all_rates()
 

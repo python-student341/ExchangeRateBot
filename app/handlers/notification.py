@@ -9,11 +9,12 @@ from app.common.commands import notification_mode_commands, notification_time_co
 from app.database.database import session_dep
 from app.models.user import User
 from app.dependencies.notification import check_notification_mode
+from app.common.limit import limit
 
 
 router = Router()
 
-@router.message(Command(*notification_mode_commands))
+@router.message(Command(*notification_mode_commands), limit)
 @inject
 async def update_notification_mode(session: session_dep, message: Message):
     user_choise = message.text.replace("/", "")
@@ -24,7 +25,7 @@ async def update_notification_mode(session: session_dep, message: Message):
         await message.answer("You can also set the time for notification with this command: /set_time")
 
 
-@router.message(Command(*notification_time_commands))
+@router.message(Command(*notification_time_commands), limit)
 async def cmd_set_time(message: Message):
     await message.answer(
             "Enter the time at which you want to receive a notification (like: 09:30).",
@@ -32,7 +33,7 @@ async def cmd_set_time(message: Message):
             reply_markup=ForceReply(selective=True)
         )
 
-@router.message(F.reply_to_message.text.contains("Enter the time at which you want to receive a notification (like: 09:30)."))
+@router.message(F.reply_to_message.text.contains("Enter the time at which you want to receive a notification (like: 09:30)."), limit)
 @inject
 async def update_notification_time(session: session_dep, message: Message, current_user: User = Depends(check_notification_mode)):
     time = message.text.strip()

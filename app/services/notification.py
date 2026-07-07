@@ -3,8 +3,7 @@ from sqlalchemy import select
 import datetime
 
 from app.models.user import User, NotificationMode
-from app.utils.bot_loader import bot
-from app.helpers.notification import get_users_by_notification_mode
+from app.core.bot_loader import bot
 from app.helpers.rate import fetch_all_rates
 from app.database.database import new_session
 

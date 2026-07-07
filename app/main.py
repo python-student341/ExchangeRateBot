@@ -1,7 +1,7 @@
 import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from app.utils.bot_loader import dp, bot
+from app.core.bot_loader import dp, bot
 from app.router import main_router
 from app.middlewares.user import check_user_registration
 from app.services.notification import send_notifications_on_change, send_notifications_by_time

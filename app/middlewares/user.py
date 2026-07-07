@@ -1,11 +1,12 @@
 from typing import Callable, Dict
 from aiogram.types import Message
-from fast_depends import inject
+from fast_depends import inject, Depends
 
 from app.services.user import create_user
 from app.database.redis_database import redis
 from app.utils.cache import get_cache_key
 from app.database.database import session_dep
+from app.helpers.rate_limiter import rate_limiter_factory
 
 
 @inject
